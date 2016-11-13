@@ -46,7 +46,7 @@ namespace MangaReader.ViewModels {
         }
 
         public void MangaSelected() {
-            NavigationService.Navigate(typeof(Views.MangaDetail), _selectedManga);
+            NavigationService.Navigate(typeof(Views.MangaDetail), "4e70e9f6c092255ef7004336");
             //placeholder value "4e70e9f6c092255ef7004336"
         }
 

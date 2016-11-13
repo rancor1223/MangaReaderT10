@@ -36,6 +36,10 @@ namespace MangaReader.Services {
             mangaDetail = await MangaApi.GetMangaDetailAsync(id);
         }
 
+        public static async Task<MangaDetail> PopulateMangaDetailAsync(string id) {
+            return await MangaApi.GetMangaDetailAsync(id);
+        }
+
 
         //PRIVATE
 

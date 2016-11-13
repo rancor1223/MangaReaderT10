@@ -29,7 +29,7 @@ namespace MangaReader.ViewModels {
 
         private async void Initialize() {
             await MangaApi.PopulateMangaDetailAsync(_mangaDetail, _mangaId);
-            //^^ this doesn't update the view
+            //^^ view should update after this
         }
 
     }
