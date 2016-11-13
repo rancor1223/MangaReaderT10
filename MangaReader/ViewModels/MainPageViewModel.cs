@@ -28,6 +28,7 @@ namespace MangaReader.ViewModels {
             get { return _selectedManga; }
             set { Set(ref _selectedManga, value); }
         }
+        //^^ this isn't getting set
 
         public MainPageViewModel() {
             _mangaList = new ObservableCollection<MangaListItem>();
@@ -44,11 +45,11 @@ namespace MangaReader.ViewModels {
             await MangaApi.PopulateMangaListAsync(_mangaList, _mainSearchText);
         }
 
-        
         public void MangaSelected() {
             NavigationService.Navigate(typeof(Views.MangaDetail), _selectedManga);
+            //placeholder value "4e70e9f6c092255ef7004336"
         }
-        
+
     }
 }
 

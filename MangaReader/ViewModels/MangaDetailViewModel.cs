@@ -19,27 +19,17 @@ namespace MangaReader.ViewModels {
         }
 
         private string _mangaId;
-        public string mangaId {
-            get { return _mangaId; }
-            set { Set(ref _mangaId, value); }
-        }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState) {
             _mangaId = parameter as string;
+            Initialize();
 
             await Task.CompletedTask;
         }
 
-        public MangaDetailViewModel() {
-            _mangaDetail = new MangaDetail();
-            mangaDetail = new MangaDetail();
-
-            Initialize();
-        }
-
         private async void Initialize() {
-            await MangaApi.PopulateMangaDetailAsync(_mangaDetail, "4e70e9f6c092255ef7004336");
-            //currently using placeholder value
+            await MangaApi.PopulateMangaDetailAsync(_mangaDetail, _mangaId);
+            //^^ this doesn't update the view
         }
 
     }

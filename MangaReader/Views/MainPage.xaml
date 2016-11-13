@@ -24,10 +24,11 @@
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
-            
-            SelectedItem="{x:Bind ViewModel.selectedManga, Mode=TwoWay}"
+            SelectedItem="{x:Bind ViewModel.selectedManga, Mode=TwoWay}" 
             ItemClick="{x:Bind ViewModel.MangaSelected}"
             >
+            <!-- SelectedItem can't record a click? -->
+            
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:MangaListItem">
                     <StackPanel Orientation="Horizontal" Width="130" Height="180" Padding="3">
