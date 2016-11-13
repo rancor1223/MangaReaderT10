@@ -24,7 +24,8 @@
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
-            SelectedItem="{x:Bind ViewModel.selectedManga}"
+            
+            SelectedItem="{x:Bind ViewModel.selectedManga, Mode=TwoWay}"
             ItemClick="{x:Bind ViewModel.MangaSelected}"
             >
             <GridView.ItemTemplate>

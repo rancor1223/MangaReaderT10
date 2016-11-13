@@ -24,8 +24,10 @@ namespace MangaReader.ViewModels {
             set { Set(ref _mangaId, value); }
         }
 
-        public void OnNavigatedToAsync(object parameter) {
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState) {
             _mangaId = parameter as string;
+
+            await Task.CompletedTask;
         }
 
         public MangaDetailViewModel() {
@@ -36,7 +38,8 @@ namespace MangaReader.ViewModels {
         }
 
         private async void Initialize() {
-            _mangaDetail = await MangaApi.PopulateMangaDetailAsync("4e70e9f6c092255ef7004336");
+            await MangaApi.PopulateMangaDetailAsync(_mangaDetail, "4e70e9f6c092255ef7004336");
+            //currently using placeholder value
         }
 
     }

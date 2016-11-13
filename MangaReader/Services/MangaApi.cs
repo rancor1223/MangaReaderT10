@@ -32,12 +32,8 @@ namespace MangaReader.Services {
                 mangaList.Add(mangaItem);
         }
 
-        public static async Task<List<MangaListItem>> PopulateMangaListAsync() {
-            return await MangaApi.FormatMangaListAsync();
-        }
-
-        public static async Task<MangaDetail> PopulateMangaDetailAsync( string id) {
-            return await MangaApi.GetMangaDetailAsync(id);
+        public static async Task PopulateMangaDetailAsync(MangaDetail mangaDetail, string id) {
+            mangaDetail = await MangaApi.GetMangaDetailAsync(id);
         }
 
 
