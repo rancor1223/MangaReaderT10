@@ -4,6 +4,7 @@
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:Template10.Controls"
+      xmlns:converters="using:Template10.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:MangaReader.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,16 +16,95 @@
         <vm:MangaDetailViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <converters:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
+            <converters:ValueWhenConverter.When>
+                <x:Boolean>true</x:Boolean>
+            </converters:ValueWhenConverter.When>
+            <converters:ValueWhenConverter.Value>
+                <Visibility>Visible</Visibility>
+            </converters:ValueWhenConverter.Value>
+            <converters:ValueWhenConverter.Otherwise>
+                <Visibility>Collapsed</Visibility>
+            </converters:ValueWhenConverter.Otherwise>
+        </converters:ValueWhenConverter>
 
-        <TextBlock 
-            x:Name="textBlock" 
-            HorizontalAlignment="Left" 
-            Margin="58,48,0,0" 
-            TextWrapping="Wrap"
-            Text="{x:Bind ViewModel.mangaDetail.title, Mode=OneWay}" 
-            VerticalAlignment="Top" 
-            FontSize="36"/>
+        <converters:ValueWhenConverter x:Key="VisibleWhenFalseConverter">
+            <converters:ValueWhenConverter.When>
+                <x:Boolean>false</x:Boolean>
+            </converters:ValueWhenConverter.When>
+            <converters:ValueWhenConverter.Value>
+                <Visibility>Visible</Visibility>
+            </converters:ValueWhenConverter.Value>
+            <converters:ValueWhenConverter.Otherwise>
+                <Visibility>Collapsed</Visibility>
+            </converters:ValueWhenConverter.Otherwise>
+        </converters:ValueWhenConverter>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Image x:Name="image" 
+               HorizontalAlignment="Left" 
+               Height="250" 
+               Margin="24,72,0,0" 
+               VerticalAlignment="Top" 
+               Width="180"
+               Source="{x:Bind ViewModel.mangaDetail.image, Mode=OneWay}"
+               />
+        <TextBlock Text="{x:Bind ViewModel.mangaDetail.description, Mode=OneWay}"
+                   TextWrapping="Wrap"
+                   Grid.Column="0" 
+                   Grid.Row="0" Margin="24,327,633,10" 
+                   />
+
+        <ListView x:Name="listView" 
+                  HorizontalAlignment="Right" 
+                  Margin="0,72,24,10" 
+                  Width="375"
+                  ItemsSource="{x:Bind ViewModel.mangaDetail.chapters, Mode=OneWay}" 
+                  IsItemClickEnabled="True"
+                  SelectionMode="None"
+                  ItemClick="{x:Bind ViewModel.ChapterSelected}"
+                  >
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:ChapterListItem">
+                    <Grid Height="40" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Chapter" Grid.Column="0" Grid.Row="0" />
+                        <TextBlock Text="{x:Bind number}" Grid.Column="1" Grid.Row="0" />
+                        <TextBlock Text="{x:Bind title}" Grid.Row="1" Grid.ColumnSpan="2" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <CommandBar VerticalAlignment="Top">
+
+            <AppBarButton 
+                Icon="Favorite" 
+                Label="Favourite" 
+                Visibility="{x:Bind ViewModel.isFavourite, Mode=OneWay, Converter={StaticResource VisibleWhenFalseConverter}}" 
+                Click="{x:Bind ViewModel.MangaFavourited}"/>
+            <AppBarButton 
+                Icon="Unfavorite" 
+                Label="Unfavourite" 
+                Visibility="{x:Bind ViewModel.isFavourite, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}"
+                Click="{x:Bind ViewModel.MangaUnfavourited}"/>
+
+            <AppBarButton Icon="Refresh" Label="Reload"/>
+            
+            <CommandBar.Content>
+                <TextBlock Text="{x:Bind ViewModel.mangaDetail.title, Mode=OneWay}" Margin="0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="16,8"/>
+            </CommandBar.Content>
+        </CommandBar>
 
     </Grid>
 </Page>

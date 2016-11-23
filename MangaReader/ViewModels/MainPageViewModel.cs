@@ -8,11 +8,14 @@ using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using MangaReader.Models;
 using MangaReader.Services;
+using Windows.UI.Xaml.Controls;
+using System.Diagnostics;
+using Windows.Storage;
 
 namespace MangaReader.ViewModels {
     public class MainPageViewModel : ViewModelBase {
-        private ObservableCollection<MangaListItem> _mangaList;
-        public ObservableCollection<MangaListItem> mangaList {
+        private List<MangaItem> _mangaList;
+        public List<MangaItem> mangaList {
             get { return _mangaList; }
             set { Set(ref _mangaList, value); }
         }
@@ -20,36 +23,29 @@ namespace MangaReader.ViewModels {
         private string _mainSearchText;
         public string mainSearchText {
             get { return _mainSearchText; }
-            set { Set(ref _mainSearchText, value); } 
+            set { Set(ref _mainSearchText, value); }
         }
 
-        private string _selectedManga;
-        public string selectedManga {
-            get { return _selectedManga; }
-            set { Set(ref _selectedManga, value); }
-        }
-        //^^ this isn't getting set
 
         public MainPageViewModel() {
-            _mangaList = new ObservableCollection<MangaListItem>();
-            mangaList = new ObservableCollection<MangaListItem>();
+            _mangaList = new List<MangaItem>();
+            mangaList = new List<MangaItem>();
 
             Initialize();
         }
 
         private async void Initialize() {
-            await MangaApi.PopulateMangaListAsync(_mangaList);
+            mangaList = await MangaListGet.GetListAsync();
         }
 
         public async void MainSearchSubmitted() {
-            await MangaApi.PopulateMangaListAsync(_mangaList, _mainSearchText);
+            mangaList = await MangaListGet.GetListAsync(_mainSearchText);
         }
 
-        public void MangaSelected() {
-            NavigationService.Navigate(typeof(Views.MangaDetail), "4e70e9f6c092255ef7004336");
-            //placeholder value "4e70e9f6c092255ef7004336"
+        public void MangaSelected(object sender, ItemClickEventArgs e) {
+            var mangaItem = (MangaItem)e.ClickedItem;
+            NavigationService.Navigate(typeof(Views.MangaDetail), mangaItem.id);
         }
-
     }
 }
 

@@ -96,12 +96,24 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\MangaDetail.cs" />
-    <Compile Include="Models\MangaList.cs" />
+    <Compile Include="Models\ChapterListItem.cs" />
+    <Compile Include="Models\MangaChapter.cs" />
+    <Compile Include="Models\MangaPage.cs" />
+    <Compile Include="Models\UnformatedMangaChapterList.cs" />
+    <Compile Include="Models\UnformatedMangaDetail.cs" />
+    <Compile Include="Models\UnformatedMangaList.cs" />
+    <Compile Include="Models\UnformatedMangaListItem.cs" />
+    <Compile Include="Models\MangaItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\MangaApi.cs" />
+    <Compile Include="Services\MangaChapterGet.cs" />
+    <Compile Include="Services\MangaDetailGet.cs" />
+    <Compile Include="Services\MangaListGet.cs" />
+    <Compile Include="ViewModels\ChapterPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\MangaDetailViewModel.cs" />
+    <Compile Include="Views\ChapterPage.xaml.cs">
+      <DependentUpon>ChapterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -135,6 +147,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Views\ChapterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>

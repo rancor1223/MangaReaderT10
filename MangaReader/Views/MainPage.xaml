@@ -21,16 +21,13 @@
             VerticalAlignment="Stretch" 
             HorizontalAlignment="Stretch" 
             Margin="30,99,30,10" 
-            SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
-            SelectedItem="{x:Bind ViewModel.selectedManga, Mode=TwoWay}" 
+            SelectionMode="None"
             ItemClick="{x:Bind ViewModel.MangaSelected}"
-            >
-            <!-- SelectedItem can't record a click? -->
-            
+        >
             <GridView.ItemTemplate>
-                <DataTemplate x:DataType="models:MangaListItem">
+                <DataTemplate x:DataType="models:MangaItem">
                     <StackPanel Orientation="Horizontal" Width="130" Height="180" Padding="3">
                         <StackPanel.Background>
                             <ImageBrush ImageSource="{x:Bind image}"/>
@@ -40,7 +37,6 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-
 
         <AutoSuggestBox 
             Name="MainSearchBox" 
@@ -53,5 +49,6 @@
             QuerySubmitted="{x:Bind ViewModel.MainSearchSubmitted}"
             Text="{x:Bind ViewModel.mainSearchText, Mode=TwoWay}"
         />
+
     </Grid>
 </Page>

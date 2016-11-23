@@ -1,10 +1,9 @@
-using System;
-using Template10.Services.NavigationService;
+﻿using System;
 using Windows.UI.Xaml.Controls;
 
 namespace MangaReader.Views {
-    public sealed partial class MainPage : Page {
-        public MainPage() {
+    public sealed partial class ChapterPage : Page {
+        public ChapterPage() {
             InitializeComponent();
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
         }
