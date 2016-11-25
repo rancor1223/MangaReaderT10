@@ -5,7 +5,7 @@ namespace MangaReader.Views {
     public sealed partial class ChapterPage : Page {
         public ChapterPage() {
             InitializeComponent();
-            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Disabled;
         }
     }
 }

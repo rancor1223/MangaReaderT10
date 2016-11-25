@@ -35,8 +35,8 @@ namespace MangaReader.Services {
                 var formatedPage = new MangaPage();
                 formatedPage.page = (int)page[0];
                 formatedPage.url = "https://cdn.mangaeden.com/mangasimg/" + (string)page[1];
-                formatedPage.width = (int)page[2];
-                formatedPage.heigth = (int)page[3];
+                formatedPage.width = Convert.ToDouble((int)page[2]);
+                formatedPage.height = Convert.ToDouble((int)page[3]);
                 pageList.Add(formatedPage);
             }
 

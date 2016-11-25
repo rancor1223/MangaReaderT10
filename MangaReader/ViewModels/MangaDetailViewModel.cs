@@ -26,6 +26,7 @@ namespace MangaReader.ViewModels {
             get { return _isFavourite; }
             set { Set(ref _isFavourite, value); }
         }
+
         private string _mangaId;
 
         public MangaDetailViewModel() {
@@ -46,7 +47,12 @@ namespace MangaReader.ViewModels {
 
         public void ChapterSelected(object sender, ItemClickEventArgs e) {
             var _chapterId = (ChapterListItem)e.ClickedItem;
-            NavigationService.Navigate(typeof(Views.ChapterPage), _chapterId.id);
+
+            var _chapterView = new MangaChapterView();
+            _chapterView.chapterId = _chapterId.id;
+            _chapterView.title = _mangaDetail.title;
+
+            NavigationService.Navigate(typeof(Views.ChapterPage), _chapterView);
         }
 
         public void MangaFavourited() {

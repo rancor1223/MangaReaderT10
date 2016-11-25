@@ -1,10 +1,11 @@
 ﻿<Page x:Class="MangaReader.Views.ChapterPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:behaviors="using:Template10.Behaviors"
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
-      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
       xmlns:controls="using:Template10.Controls"
+      xmlns:converters="using:Template10.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:MangaReader.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -17,16 +18,71 @@
         <vm:ChapterPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
+    <Page.Resources>
+        <converters:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
+            <converters:ValueWhenConverter.When>
+                <x:Boolean>true</x:Boolean>
+            </converters:ValueWhenConverter.When>
+            <converters:ValueWhenConverter.Value>
+                <Visibility>Visible</Visibility>
+            </converters:ValueWhenConverter.Value>
+            <converters:ValueWhenConverter.Otherwise>
+                <Visibility>Collapsed</Visibility>
+            </converters:ValueWhenConverter.Otherwise>
+        </converters:ValueWhenConverter>
+    </Page.Resources>
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <FlipView
         ItemsSource="{x:Bind ViewModel.pageList, Mode=OneWay}" 
+        x:Name="flipView"
+        DataContext="MangaPage"
+        SizeChanged="{x:Bind ViewModel.OnPageResized}"
+        SelectedValuePath="page"
+        SelectedValue="{x:Bind ViewModel.currentPageTemp, Mode=TwoWay}"
+        SelectionChanged="{x:Bind ViewModel.OnPageFlip}"
+        Tapped="{x:Bind ViewModel.OnPageTap}"
         >
+
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="models:MangaPage">
-                    <Image Source="{x:Bind url}"/>
+                    <ScrollViewer MinZoomFactor="1">
+                        <Grid>
+                            <Image Source="{x:Bind url}"
+                               Width="{x:Bind width}"
+                               Height="{x:Bind height}"
+                               />
+                        </Grid>
+                    </ScrollViewer>
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
+
+        <CommandBar VerticalAlignment="Top" 
+                    Visibility="{x:Bind ViewModel.isCommanBarVisible, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}" 
+                    >
+            <AppBarSeparator/>
+            <AppBarButton 
+                Icon="Sort" 
+                Label="Fit to Height" 
+                Background="Gray"
+                />
+            <AppBarButton 
+                Icon="Switch" 
+                Label="Fit to Width" 
+                />
+            <AppBarSeparator/>
+
+            <AppBarButton 
+                Icon="Refresh" 
+                Label="Reload"
+                />
+
+
+            <CommandBar.Content>
+                <TextBlock Text="{x:Bind ViewModel.pageMeter, Mode=OneWay}" Margin="0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="16,8"/>
+            </CommandBar.Content>
+        </CommandBar>
     </Grid>
 </Page>
