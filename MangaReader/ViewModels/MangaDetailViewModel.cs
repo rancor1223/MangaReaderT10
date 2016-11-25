@@ -46,11 +46,16 @@ namespace MangaReader.ViewModels {
         }
 
         public void ChapterSelected(object sender, ItemClickEventArgs e) {
-            var _chapterId = (ChapterListItem)e.ClickedItem;
+            var _chapter = (ChapterListItem)e.ClickedItem;
 
             var _chapterView = new MangaChapterView();
-            _chapterView.chapterId = _chapterId.id;
-            _chapterView.title = _mangaDetail.title;
+            _chapterView.chapterId = _chapter.id;
+            if(_chapterView.title == "") {
+                _chapterView.title = "Chapter " + _chapter.number;
+            } else {
+                _chapterView.title = _chapter.title;
+            }
+            _chapterView.title = _chapter.title;
 
             NavigationService.Navigate(typeof(Views.ChapterPage), _chapterView);
         }

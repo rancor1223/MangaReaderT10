@@ -31,6 +31,8 @@
             </converters:ValueWhenConverter.Otherwise>
         </converters:ValueWhenConverter>
     </Page.Resources>
+    
+    
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -47,7 +49,12 @@
 
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="models:MangaPage">
-                    <ScrollViewer MinZoomFactor="1">
+                    <ScrollViewer 
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Auto"
+                        ZoomMode="Enabled"
+                        MinZoomFactor="0.9"
+                        MaxZoomFactor="2.5">
                         <Grid>
                             <Image Source="{x:Bind url}"
                                Width="{x:Bind width}"
@@ -60,17 +67,21 @@
         </FlipView>
 
         <CommandBar VerticalAlignment="Top" 
-                    Visibility="{x:Bind ViewModel.isCommanBarVisible, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}" 
+                    Visibility="{x:Bind ViewModel.isCommanBarVisible, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}"
                     >
+            
             <AppBarSeparator/>
             <AppBarButton 
                 Icon="Sort" 
-                Label="Fit to Height" 
-                Background="Gray"
-                />
+                Label="Height fit" 
+                >
+                <AppBarButton.Background>
+                    <SolidColorBrush Color="Gray" Opacity="0.3" />
+                </AppBarButton.Background>
+            </AppBarButton>
             <AppBarButton 
                 Icon="Switch" 
-                Label="Fit to Width" 
+                Label="Width fit" 
                 />
             <AppBarSeparator/>
 
@@ -81,7 +92,28 @@
 
 
             <CommandBar.Content>
-                <TextBlock Text="{x:Bind ViewModel.pageMeter, Mode=OneWay}" Margin="0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="16,8"/>
+                <Grid Padding="16,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{x:Bind ViewModel.pageMeter, Mode=OneWay}" 
+                               Margin="0" 
+                               FontSize="20" 
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Center" 
+                               Grid.Column="0"
+                               />
+
+                    <TextBlock Text="{x:Bind ViewModel.title, Mode=OneWay}" 
+                               Margin="0" 
+                               FontSize="20" 
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Center" 
+                               Grid.Column="1"
+                               />
+                </Grid>
             </CommandBar.Content>
         </CommandBar>
     </Grid>
