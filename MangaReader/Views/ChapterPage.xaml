@@ -11,6 +11,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:MangaReader.ViewModels"
       xmlns:models="using:MangaReader.Models"
+      xmlns:MyConverters="using:MangaReader.Models.Converters"
+
       mc:Ignorable="d"
       >
 
@@ -19,6 +21,9 @@
     </Page.DataContext>
 
     <Page.Resources>
+
+        <MyConverters:NullToAuto x:Key="NullToAuto" />
+        
         <converters:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
             <converters:ValueWhenConverter.When>
                 <x:Boolean>true</x:Boolean>
@@ -30,11 +35,13 @@
                 <Visibility>Collapsed</Visibility>
             </converters:ValueWhenConverter.Otherwise>
         </converters:ValueWhenConverter>
-    </Page.Resources>
-    
-    
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        
+    </Page.Resources>
+
+
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="gridContainer">
 
         <FlipView
         ItemsSource="{x:Bind ViewModel.pageList, Mode=OneWay}" 
@@ -44,7 +51,7 @@
         SelectedValuePath="page"
         SelectedValue="{x:Bind ViewModel.currentPageTemp, Mode=TwoWay}"
         SelectionChanged="{x:Bind ViewModel.OnPageFlip}"
-        Tapped="{x:Bind ViewModel.OnPageTap}"
+        
         >
 
             <FlipView.ItemTemplate>
@@ -56,40 +63,56 @@
                         MinZoomFactor="0.9"
                         MaxZoomFactor="2.5">
                         <Grid>
-                            <Image Source="{x:Bind url}"
-                               Width="{x:Bind width}"
-                               Height="{x:Bind height}"
-                               />
+                            <Image 
+                               x:Name="currentImage"
+                               Source="{x:Bind url}"
+                               Width="{Binding DataContext.optimalWidth, ElementName=gridContainer}"
+                               Height="{Binding DataContext.optimalHeight, ElementName=gridContainer}" 
+                               >
+                            </Image>
+
+                            <ProgressRing 
+                                IsActive="True" 
+                                Height="50"
+                                Width="50"
+                                />
                         </Grid>
                     </ScrollViewer>
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
 
+
+
         <CommandBar VerticalAlignment="Top" 
                     Visibility="{x:Bind ViewModel.isCommanBarVisible, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}"
                     >
-            
-            <AppBarSeparator/>
             <AppBarButton 
                 Icon="Sort" 
-                Label="Height fit" 
+                Label="Fit to height" 
+                Width="75"
+                Click="{x:Bind ViewModel.OnFitHeightSelection}" 
+                
                 >
                 <AppBarButton.Background>
-                    <SolidColorBrush Color="Gray" Opacity="0.3" />
+                    <SolidColorBrush 
+                        
+                        Opacity="0.3" />
                 </AppBarButton.Background>
             </AppBarButton>
+
             <AppBarButton 
                 Icon="Switch" 
-                Label="Width fit" 
-                />
-            <AppBarSeparator/>
-
-            <AppBarButton 
-                Icon="Refresh" 
-                Label="Reload"
-                />
-
+                Label="Fit to width"
+                Width="75"
+                Click="{x:Bind ViewModel.OnFitWidthSelection}"
+                >
+                <AppBarButton.Background>
+                    <SolidColorBrush 
+                        Color="{x:Bind ViewModel.OnFitWidthSelection}"
+                        Opacity="0.3" />
+                </AppBarButton.Background>
+            </AppBarButton>
 
             <CommandBar.Content>
                 <Grid Padding="16,10">

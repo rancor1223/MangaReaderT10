@@ -97,9 +97,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\ChapterListItem.cs" />
+    <Compile Include="Models\Converters\NullToAuto.cs" />
     <Compile Include="Models\MangaChapter.cs" />
     <Compile Include="Models\MangaChapterView.cs" />
     <Compile Include="Models\MangaPage.cs" />
+    <Compile Include="Models\FullyObservableCollection.cs" />
     <Compile Include="Models\UnformatedMangaChapterList.cs" />
     <Compile Include="Models\UnformatedMangaDetail.cs" />
     <Compile Include="Models\UnformatedMangaList.cs" />

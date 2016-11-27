@@ -13,6 +13,8 @@ using System.Diagnostics;
 using Windows.Storage;
 using System.Windows;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
+using Windows.UI;
 
 namespace MangaReader.ViewModels {
     public class ChapterPageViewModel : ViewModelBase {
@@ -73,17 +75,21 @@ namespace MangaReader.ViewModels {
             set { Set(ref _isCommanBarVisible, value); }
         }
 
-        //other variables
+        //other
 
         private bool _isResizable = false;
 
         private string _chapterId { get; set; }
 
-
-
         private int? _pageCount;
 
-        //methods
+        private bool _displayMode;
+        public bool displayMode {
+            get { return _displayMode; }
+            set { Set(ref _displayMode, value); }
+        }
+        
+        //methods and events
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState) {
             var _chapterView = parameter as MangaChapterView;
@@ -107,7 +113,9 @@ namespace MangaReader.ViewModels {
                 i++;
             }
             _pageCount = pageList.Count();
-            _resizeImages();
+
+            displayMode = false;
+            _ResizeImages();
         }
 
 
@@ -116,7 +124,7 @@ namespace MangaReader.ViewModels {
             _pageHeight = e.NewSize.Height;
 
             if (_isResizable) {
-                _resizeImages();
+                _ResizeImages();
             }
         }
 
@@ -130,13 +138,31 @@ namespace MangaReader.ViewModels {
             isCommanBarVisible = !_isCommanBarVisible;
         }
 
-        private void _resizeImages() {
-            foreach (MangaPage page in pageList) {
-                page.width = _pageWidth;
-                page.height = _pageHeight;
-            }
+        public void OnFitHeightSelection() {
+            displayMode = true;
+            _ResizeImages();
         }
 
+        public void OnFitWidthSelection() {
+            displayMode = false;
+            _ResizeImages();
+        }
+
+        private void _ResizeImages() {
+            switch (_displayMode) {
+                case true:
+                    optimalWidth = double.NaN; //defaults to "auto" in XAML;
+                    optimalHeight = _pageHeight;
+
+                    break;
+
+                case false:
+                    optimalWidth = _pageWidth;
+                    optimalHeight = double.NaN; //defaults to "auto" in XAML;
+
+                    break;
+            }
+        }
     }
 }
 
