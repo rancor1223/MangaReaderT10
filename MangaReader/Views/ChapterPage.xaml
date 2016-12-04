@@ -23,6 +23,7 @@
     <Page.Resources>
 
         <MyConverters:NullToAuto x:Key="NullToAuto" />
+        <converters:ChangeTypeConverter x:Key="TypeConverter"/>
         
         <converters:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
             <converters:ValueWhenConverter.When>
@@ -49,9 +50,8 @@
         DataContext="MangaPage"
         SizeChanged="{x:Bind ViewModel.OnPageResized}"
         SelectedValuePath="page"
-        SelectedValue="{x:Bind ViewModel.currentPageTemp, Mode=TwoWay}"
+        SelectedValue="{x:Bind ViewModel.currentPage, Mode=TwoWay, Converter={StaticResource TypeConverter}}"
         SelectionChanged="{x:Bind ViewModel.OnPageFlip}"
-        
         >
 
             <FlipView.ItemTemplate>
@@ -68,6 +68,7 @@
                                Source="{x:Bind url}"
                                Width="{Binding DataContext.optimalWidth, ElementName=gridContainer}"
                                Height="{Binding DataContext.optimalHeight, ElementName=gridContainer}" 
+                               Canvas.ZIndex="1" 
                                >
                             </Image>
 
@@ -92,13 +93,7 @@
                 Label="Fit to height" 
                 Width="75"
                 Click="{x:Bind ViewModel.OnFitHeightSelection}" 
-                
                 >
-                <AppBarButton.Background>
-                    <SolidColorBrush 
-                        
-                        Opacity="0.3" />
-                </AppBarButton.Background>
             </AppBarButton>
 
             <AppBarButton 
@@ -107,11 +102,13 @@
                 Width="75"
                 Click="{x:Bind ViewModel.OnFitWidthSelection}"
                 >
+                <!--
                 <AppBarButton.Background>
                     <SolidColorBrush 
                         Color="{x:Bind ViewModel.OnFitWidthSelection}"
                         Opacity="0.3" />
                 </AppBarButton.Background>
+                -->
             </AppBarButton>
 
             <CommandBar.Content>

@@ -7,7 +7,6 @@ using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using MangaReader.Models;
-using MangaReader.Services;
 using Windows.UI.Xaml.Controls;
 using System.Diagnostics;
 using Windows.Storage;
@@ -35,11 +34,11 @@ namespace MangaReader.ViewModels {
         }
 
         private async void Initialize() {
-            mangaList = await MangaListGet.GetListAsync();
+            mangaList = await MangaItem.GetListAsync();
         }
 
         public async void MainSearchSubmitted() {
-            mangaList = await MangaListGet.GetListAsync(_mainSearchText);
+            mangaList = await MangaItem.GetListAsync(_mainSearchText);
         }
 
         public void MangaSelected(object sender, ItemClickEventArgs e) {

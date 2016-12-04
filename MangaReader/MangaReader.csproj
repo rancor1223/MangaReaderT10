@@ -98,19 +98,14 @@
     </Compile>
     <Compile Include="Models\ChapterListItem.cs" />
     <Compile Include="Models\Converters\NullToAuto.cs" />
-    <Compile Include="Models\MangaChapter.cs" />
     <Compile Include="Models\MangaChapterView.cs" />
     <Compile Include="Models\MangaPage.cs" />
-    <Compile Include="Models\FullyObservableCollection.cs" />
     <Compile Include="Models\UnformatedMangaChapterList.cs" />
     <Compile Include="Models\UnformatedMangaDetail.cs" />
     <Compile Include="Models\UnformatedMangaList.cs" />
     <Compile Include="Models\UnformatedMangaListItem.cs" />
     <Compile Include="Models\MangaItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\MangaChapterGet.cs" />
-    <Compile Include="Services\MangaDetailGet.cs" />
-    <Compile Include="Services\MangaListGet.cs" />
     <Compile Include="ViewModels\ChapterPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\MangaDetailViewModel.cs" />

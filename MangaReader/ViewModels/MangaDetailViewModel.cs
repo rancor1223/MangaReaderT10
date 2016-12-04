@@ -7,10 +7,10 @@ using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using MangaReader.Models;
-using MangaReader.Services;
 using Windows.UI.Xaml.Controls;
 using Microsoft.Toolkit.Uwp;
 using System.Windows.Input;
+using System.Diagnostics;
 
 namespace MangaReader.ViewModels {
     class MangaDetailViewModel : ViewModelBase {
@@ -28,6 +28,7 @@ namespace MangaReader.ViewModels {
         }
 
         private string _mangaId;
+        private LocalObjectStorageHelper _objectStorage = new LocalObjectStorageHelper();
 
         public MangaDetailViewModel() {
             isFavourite = false;
@@ -36,13 +37,17 @@ namespace MangaReader.ViewModels {
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState) {
             _mangaId = parameter as string;
-            Initialize();
+            Initialize(); 
 
             await Task.CompletedTask;
         }
 
         private async void Initialize() {
-            mangaDetail = await MangaDetailGet.GetAsync(_mangaId);
+            mangaDetail = await MangaItem.GetDetailAsync(_mangaId);
+
+            var o = new List<MangaItem> { mangaDetail };
+            await _objectStorage.SaveFileAsync("favourites", o);
+            
         }
 
         public void ChapterSelected(object sender, ItemClickEventArgs e) {
@@ -60,9 +65,16 @@ namespace MangaReader.ViewModels {
             NavigationService.Navigate(typeof(Views.ChapterPage), _chapterView);
         }
 
-        public void MangaFavourited() {
-            isFavourite = true;
-            
+        public async void MangaFavourited() {
+            if (await _objectStorage.FileExistsAsync("favourites")) {
+                var result = await _objectStorage.ReadFileAsync<List<MangaItem>>("favourites");
+                result.Add(mangaDetail);
+                await _objectStorage.SaveFileAsync("favourites", result);
+
+                isFavourite = true;
+            } else {
+                Debug.WriteLine("problem reading favourites");
+            }
         }
 
         public void MangaUnfavourited() {

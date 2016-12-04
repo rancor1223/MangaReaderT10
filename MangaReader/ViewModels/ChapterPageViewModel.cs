@@ -7,7 +7,6 @@ using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using MangaReader.Models;
-using MangaReader.Services;
 using Windows.UI.Xaml.Controls;
 using System.Diagnostics;
 using Windows.Storage;
@@ -25,15 +24,9 @@ namespace MangaReader.ViewModels {
         }
 
         //page counter
-
-        private object _currentPageTemp;
-        public object currentPageTemp {
-            get { return _currentPageTemp; }
-            set { Set(ref _currentPageTemp, value); }
-        }
-
-        private string _currentPage;
-        public string currentPage {
+        
+        private int _currentPage;
+        public int currentPage {
             get { return _currentPage; }
             set { Set(ref _currentPage, value); }
         }
@@ -104,7 +97,7 @@ namespace MangaReader.ViewModels {
         }
 
         private async void Initialize() {
-            pageList = await MangaChapterGet.GetAsync(_chapterId);
+            pageList = await MangaPage.GetListAsync(_chapterId);
             pageList.Reverse();
 
             var i = 1;
@@ -114,7 +107,7 @@ namespace MangaReader.ViewModels {
             }
             _pageCount = pageList.Count();
 
-            displayMode = false;
+            displayMode = true; //true = fit to height
             _ResizeImages();
         }
 
@@ -129,8 +122,8 @@ namespace MangaReader.ViewModels {
         }
 
         public void OnPageFlip() {
-            if (_currentPageTemp != null && _pageCount != null) {
-                pageMeter = ((int)_currentPageTemp).ToString() + '/' + _pageCount.ToString();
+            if (_pageCount != null) {
+                pageMeter = _currentPage.ToString() + '/' + _pageCount.ToString();
             }
         }
 
