@@ -15,6 +15,13 @@ namespace MangaReader.Models {
         public double width { get; set; }
         public double height { get; set; }
 
+        public MangaPage(int p, string u, double w, double h) {
+            page = p;
+            url = u;
+            width = w;
+            height = h;
+        }
+
         public static async Task<List<MangaPage>> GetListAsync(string id) {
             return await FormatMangaChapterAsync(id);
         }
@@ -37,11 +44,12 @@ namespace MangaReader.Models {
             var pageList = new List<MangaPage>();
 
             foreach (List<object> page in pageListContainer.images) {
-                var formatedPage = new MangaPage();
-                formatedPage.page = (int)page[0];
-                formatedPage.url = "https://cdn.mangaeden.com/mangasimg/" + (string)page[1];
-                formatedPage.width = Convert.ToDouble((int)page[2]);
-                formatedPage.height = Convert.ToDouble((int)page[3]);
+                var formatedPage = new MangaPage(
+                    (int)page[0],
+                    "https://cdn.mangaeden.com/mangasimg/" + (string)page[1],
+                    Convert.ToDouble((int)page[2]),
+                    Convert.ToDouble((int)page[3])
+                    );
                 pageList.Add(formatedPage);
             }
 

@@ -31,6 +31,30 @@ namespace MangaReader.Models {
             }
         }
 
+        //constructor
+
+        //full
+        public MangaItem(string t, string im, string i, string al, List<string> cat, string desc, string a, string ar, List<ChapterListItem> ch)
+            : this(i, im, t, al, cat) {
+            description = desc;
+            author = a;
+            artist = ar;
+            chapters = ch;
+        }
+
+        //partial (for list view)
+        public MangaItem(string t, string im, string i, string al, List<string> cat) : this(t, im) {
+            id = i;
+            alias = al;
+            categories = cat;
+        }
+
+        //minimal (for DesignTime)
+        public MangaItem(string t, string im) {
+            title = t;
+            image = im;
+        }
+
         //List of manga with only basic info
 
         public static async Task<List<MangaItem>> GetListAsync(string search) {
@@ -50,13 +74,13 @@ namespace MangaReader.Models {
             var mangaList = new List<MangaItem>();
 
             foreach (UnformatedMangaListItem unformatedManga in mangaListContainer) {
-                var manga = new MangaItem();
-
-                manga.id = unformatedManga.i;
-                manga.title = unformatedManga.t;
-                manga.image = "https://cdn.mangaeden.com/mangasimg/" + unformatedManga.im;
-                manga.categories = unformatedManga.c;
-                manga.alias = unformatedManga.a.Replace("-", " ");
+                var manga = new MangaItem(
+                    unformatedManga.t,
+                    "https://cdn.mangaeden.com/mangasimg/" + unformatedManga.im,
+                    unformatedManga.i,
+                    unformatedManga.a.Replace("-", " "),
+                    unformatedManga.c
+                    );
 
                 mangaList.Add(manga);
             }
@@ -72,31 +96,39 @@ namespace MangaReader.Models {
 
         private static async Task<MangaItem> FormatMangaDetailAsync(string id) {
             var unformatedMangaDetail = await UnformatedMangaDetail.GetMangaDetailAsync(id);
-            var formatedMangaDetail = new MangaItem();
 
-            formatedMangaDetail.title = unformatedMangaDetail.title;
-            formatedMangaDetail.image = "https://cdn.mangaeden.com/mangasimg/" + unformatedMangaDetail.image;
-            formatedMangaDetail.description = unformatedMangaDetail.description;
-            formatedMangaDetail.author = unformatedMangaDetail.author;
-            formatedMangaDetail.artist = unformatedMangaDetail.artist;
-            formatedMangaDetail.categories = unformatedMangaDetail.categories;
-            formatedMangaDetail.chapters = new List<ChapterListItem>();
+            var chapters = new List<ChapterListItem>();
 
             foreach (var chapter in unformatedMangaDetail.chapters) {
-                var formatedChapter = new ChapterListItem();
-                formatedChapter.number = Convert.ToString(chapter[0]);
-
-                if (formatedChapter.number == (string)chapter[2]) {
+                string title;
+                if (Convert.ToString(chapter[0]) == (string)chapter[2]) {
                     //some chapters are named with their number, which would be duplicitely displayed
-                    formatedChapter.title = "";
+                    title = "";
                 } else {
-                    formatedChapter.title = (string)chapter[2];
+                    title = (string)chapter[2];
                 }
 
-                formatedChapter.id = (string)chapter[3];
+                var formatedChapter = new ChapterListItem(
+                    Convert.ToString(chapter[0]),
+                    title,
+                    (string)chapter[3]
+                    );
 
-                formatedMangaDetail.chapters.Add(formatedChapter);
+                chapters.Add(formatedChapter);
             }
+
+
+            var formatedMangaDetail = new MangaItem(
+                unformatedMangaDetail.title,
+                "https://cdn.mangaeden.com/mangasimg/" + unformatedMangaDetail.image,
+                "",
+                "",
+                unformatedMangaDetail.categories,
+                unformatedMangaDetail.description,
+                unformatedMangaDetail.author,
+                unformatedMangaDetail.artist,
+                chapters
+                );
 
             return formatedMangaDetail;
         }

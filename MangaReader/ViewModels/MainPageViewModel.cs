@@ -27,6 +27,15 @@ namespace MangaReader.ViewModels {
 
 
         public MainPageViewModel() {
+            
+            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled) {
+                mangaList = new List<MangaItem>();
+                mangaList.Add(new MangaItem("Test Manga", "https://cdn.mangaeden.com/mangasimg/d6/d6e8037969cc382f33e5a153871b522631f85eed538bd4d77cc2f928.png"));
+                mangaList.Add(new MangaItem("Test Manga", "https://cdn.mangaeden.com/mangasimg/cd/cdf51728888ce531ac7138ef431330708675a61bbcdc767a3103efbd.jpg"));
+                mangaList.Add(new MangaItem("Test Manga", "https://cdn.mangaeden.com/mangasimg/5d/5d5d66d58bc13129ca64fcb75e1cd1b4af25ce6b53cf7ff057ade7b3.jpg"));
+            }
+            
+
             _mangaList = new List<MangaItem>();
             mangaList = new List<MangaItem>();
 

@@ -8,5 +8,10 @@ namespace MangaReader.Models {
     public class MangaChapterView {
         public string title { get; set; }
         public string chapterId { get; set; }
+
+        public MangaChapterView(string t, string i) {
+            title = t;
+            chapterId = i;
+        }
     }
 }
