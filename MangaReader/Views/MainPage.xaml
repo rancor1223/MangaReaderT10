@@ -4,6 +4,7 @@
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:Template10.Controls"
+      xmlns:controls2="using:Microsoft.Toolkit.Uwp.UI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:MangaReader.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,40 +16,84 @@
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
+    <Page.Resources>
+        <DataTemplate x:Key="ResponsiveGridView">
+            <Grid
+                Background="Gray"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Height="220"
+                Width="160"
+                >
+                <Image
+                    Source="{Binding image}"
+                    Stretch="UniformToFill"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+                <StackPanel 
+                    Orientation="Vertical" 
+                    VerticalAlignment="Bottom" 
+                    Padding="5">
+                    <TextBlock 
+                        Text="{Binding title}"
+                        TextWrapping="Wrap"/>
+                    <StackPanel.Background>
+                        <SolidColorBrush Color="Black" Opacity="0.75"/>
+                    </StackPanel.Background>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <GridView x:Name="MangaGrid" 
-            ItemsSource="{x:Bind ViewModel.mangaList, Mode=OneWay}" 
-            VerticalAlignment="Stretch" 
-            HorizontalAlignment="Stretch" 
-            Margin="30,99,30,10" 
-            IsSwipeEnabled="false"
-            IsItemClickEnabled="True"
-            SelectionMode="None"
-            ItemClick="{x:Bind ViewModel.MangaSelected}"
-        >
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="models:MangaItem">
-                    <StackPanel Orientation="Horizontal" Width="130" Height="180" Padding="3">
-                        <StackPanel.Background>
-                            <ImageBrush ImageSource="{x:Bind image}"/>
-                        </StackPanel.Background>
-                        <TextBlock Text="{x:Bind title}" Margin="0,133,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="130"/>
-                    </StackPanel>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
+
+        <controls2:AdaptiveGridView x:Name="MangaGrid"
+                                   ItemsSource="{x:Bind ViewModel.mangaList, Mode=OneWay}" 
+                                   OneRowModeEnabled="False"
+                                   Margin="24,100,24,10" 
+                                   ItemHeight="220"
+                                   DesiredWidth="160"
+                                   SelectionMode="Single"
+                                   IsItemClickEnabled="True"
+                                   ItemTemplate="{StaticResource ResponsiveGridView}"
+                                   ItemClick="{x:Bind ViewModel.MangaSelected}"
+                                   />
 
         <AutoSuggestBox 
-            Name="MainSearchBox" 
-            HorizontalAlignment="Right" 
-            Margin="30,34,30,0" 
+            x:Name="MainSearchBox" 
+            Margin="24,34,24,0" 
             VerticalAlignment="Top" 
-            Width="300" 
             QueryIcon="Find" 
             PlaceholderText="Search by keywords"
             QuerySubmitted="{x:Bind ViewModel.MainSearchSubmitted}"
             Text="{x:Bind ViewModel.mainSearchText, Mode=TwoWay}"
         />
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowStates">
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MangaGrid.Margin" Value="24,100,24,10" />
+                        <Setter Target="MainSearchBox.Margin" Value="24,34,24,0" />
+                        <Setter Target="MainSearchBox.HorizontalAlignment" Value="Right" />
+                        <Setter Target="MainSearchBox.Width" Value="300" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MangaGrid.Margin" Value="12,56,12,10" />
+                        <Setter Target="MainSearchBox.Margin" Value="12" />
+
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
     </Grid>
 </Page>

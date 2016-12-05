@@ -24,7 +24,7 @@
 
         <MyConverters:NullToAuto x:Key="NullToAuto" />
         <converters:ChangeTypeConverter x:Key="TypeConverter"/>
-        
+
         <converters:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
             <converters:ValueWhenConverter.When>
                 <x:Boolean>true</x:Boolean>
@@ -36,8 +36,6 @@
                 <Visibility>Collapsed</Visibility>
             </converters:ValueWhenConverter.Otherwise>
         </converters:ValueWhenConverter>
-
-        
     </Page.Resources>
 
 
@@ -93,24 +91,16 @@
                 Label="Fit to height" 
                 Width="75"
                 Click="{x:Bind ViewModel.OnFitHeightSelection}" 
-                >
-            </AppBarButton>
+                />
+
 
             <AppBarButton 
                 Icon="Switch" 
                 Label="Fit to width"
                 Width="75"
                 Click="{x:Bind ViewModel.OnFitWidthSelection}"
-                >
-                <!--
-                <AppBarButton.Background>
-                    <SolidColorBrush 
-                        Color="{x:Bind ViewModel.OnFitWidthSelection}"
-                        Opacity="0.3" />
-                </AppBarButton.Background>
-                -->
-            </AppBarButton>
-
+                />
+            
             <CommandBar.Content>
                 <Grid Padding="16,10">
                     <Grid.ColumnDefinitions>
