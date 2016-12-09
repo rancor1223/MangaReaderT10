@@ -50,6 +50,7 @@
         SelectedValuePath="page"
         SelectedValue="{x:Bind ViewModel.currentPage, Mode=TwoWay, Converter={StaticResource TypeConverter}}"
         SelectionChanged="{x:Bind ViewModel.OnPageFlip}"
+        Tapped="{x:Bind ViewModel.OnPageTap}"
         >
 
             <FlipView.ItemTemplate>
@@ -59,7 +60,7 @@
                         VerticalScrollBarVisibility="Auto"
                         ZoomMode="Enabled"
                         MinZoomFactor="0.9"
-                        MaxZoomFactor="2.5">
+                        MaxZoomFactor="2">
                         <Grid>
                             <Image 
                                x:Name="currentImage"
