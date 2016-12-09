@@ -83,10 +83,12 @@
 
 
 
-        <CommandBar VerticalAlignment="Top" 
-                    Visibility="{x:Bind ViewModel.isCommanBarVisible, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}"
+        <CommandBar x:Name="TopCommandBar"
+                    VerticalAlignment="Top" 
+                    Visibility="{x:Bind ViewModel.isCommanBarVisible, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}" 
                     >
             <AppBarButton 
+                x:Name="TopFitHeightBtn"
                 Icon="Sort" 
                 Label="Fit to height" 
                 Width="75"
@@ -95,6 +97,7 @@
 
 
             <AppBarButton 
+                x:Name="TopFitWidthBtn"
                 Icon="Switch" 
                 Label="Fit to width"
                 Width="75"
@@ -126,5 +129,52 @@
                 </Grid>
             </CommandBar.Content>
         </CommandBar>
+
+        <CommandBar x:Name="BottomCommandBar"
+                    VerticalAlignment="Bottom" 
+                    Visibility="{x:Bind ViewModel.isCommanBarVisible, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}" 
+                    >
+            <AppBarButton 
+                Icon="Sort" 
+                Label="Fit to height" 
+                Width="75"
+                Click="{x:Bind ViewModel.OnFitHeightSelection}" 
+                />
+
+
+            <AppBarButton 
+                Icon="Switch" 
+                Label="Fit to width"
+                Width="75"
+                Click="{x:Bind ViewModel.OnFitWidthSelection}"
+                />
+        </CommandBar>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowStates">
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TopFitHeightBtn.Visibility" Value="Visible" />
+                        <Setter Target="TopFitWidthBtn.Visibility" Value="Visible" />
+                        <Setter Target="BottomCommandBar.Visibility" Value="Collapsed" />
+                        <Setter Target="TopCommandBar.Padding" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TopFitHeightBtn.Visibility" Value="Collapsed" />
+                        <Setter Target="TopFitWidthBtn.Visibility" Value="Collapsed" />
+                        <Setter Target="TopCommandBar.Padding" Value="0,0,-48,0" />
+                        <Setter Target="BottomCommandBar.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

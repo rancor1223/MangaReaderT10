@@ -27,16 +27,25 @@ namespace MangaReader.Models {
         }
 
         private static async Task<UnformatedMangaChapterList> GetMangaChapterAsync(string id) {
-            var http = new HttpClient();
-            var response = await http.GetAsync("http://www.mangaeden.com/api/chapter/" + id + "/");
-            var result = await response.Content.ReadAsStringAsync();
-            var serializer = new DataContractJsonSerializer(typeof(UnformatedMangaChapterList));
-            //rewrite to Newtonsoft serielizer?
 
-            var ms = new MemoryStream(Encoding.UTF8.GetBytes(result));
-            var data = (UnformatedMangaChapterList)serializer.ReadObject(ms);
+            try {
+                var http = new HttpClient();
+                var response = await http.GetAsync("http://www.mangaeden.com/api/chapter/" + id + "/");
 
-            return data;
+                var result = await response.Content.ReadAsStringAsync();
+                var serializer = new DataContractJsonSerializer(typeof(UnformatedMangaChapterList));
+                //rewrite to Newtonsoft serielizer?
+
+                var ms = new MemoryStream(Encoding.UTF8.GetBytes(result));
+                var data = (UnformatedMangaChapterList)serializer.ReadObject(ms);
+
+                return data;
+            }
+            catch (HttpRequestException e) {
+                // Throw an HttpException with customized message.
+                throw new HttpRequestException("No connection");
+            }
+            
         }
 
         private static async Task<List<MangaPage>> FormatMangaChapterAsync(string id) {

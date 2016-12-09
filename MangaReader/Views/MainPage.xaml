@@ -89,7 +89,6 @@
                     <VisualState.Setters>
                         <Setter Target="MangaGrid.Margin" Value="12,56,12,10" />
                         <Setter Target="MainSearchBox.Margin" Value="12" />
-
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
