@@ -46,21 +46,14 @@
         <Image x:Name="image" 
                HorizontalAlignment="Left" 
                Height="250" 
-               Margin="24,72,0,0" 
+               Margin="12,60,0,0" 
                VerticalAlignment="Top" 
                Width="180"
                Source="{x:Bind ViewModel.mangaDetail.image, Mode=OneWay}"
                />
-        <TextBlock Text="{x:Bind ViewModel.mangaDetail.description, Mode=OneWay}"
-                   TextWrapping="Wrap"
-                   Grid.Column="0" 
-                   Grid.Row="0" Margin="24,327,633,10" 
-                   />
 
         <ListView x:Name="listView" 
-                  HorizontalAlignment="Right" 
-                  Margin="0,72,24,10" 
-                  Width="375"
+                  Margin="12,330,12,0" 
                   ItemsSource="{x:Bind ViewModel.mangaDetail.chapters, Mode=OneWay}" 
                   IsItemClickEnabled="True"
                   SelectionMode="None"
