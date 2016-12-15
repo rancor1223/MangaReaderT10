@@ -43,6 +43,7 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+       
         <Image x:Name="image" 
                HorizontalAlignment="Left" 
                Height="250" 

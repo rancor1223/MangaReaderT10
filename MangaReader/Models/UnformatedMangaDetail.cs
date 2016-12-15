@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -37,14 +38,8 @@ namespace MangaReader.Models {
             var http = new HttpClient();
             var response = await http.GetAsync("http://www.mangaeden.com/api/manga/" + id + "/");
             var result = await response.Content.ReadAsStringAsync();
-            var serializer = new DataContractJsonSerializer(typeof(UnformatedMangaDetail));
-            //rewrite to Newtonsoft serielizer?
-
-            var ms = new MemoryStream(Encoding.Unicode.GetBytes(result));
-            var data = (UnformatedMangaDetail)serializer.ReadObject(ms);
-
+            var data = JsonConvert.DeserializeObject<UnformatedMangaDetail>(result);
             return data;
-
         }
     }
 }

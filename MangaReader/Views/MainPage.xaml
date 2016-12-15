@@ -5,6 +5,7 @@
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:Template10.Controls"
       xmlns:controls2="using:Microsoft.Toolkit.Uwp.UI.Controls"
+      xmlns:converters="using:Template10.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:MangaReader.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -43,6 +44,18 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
+
+        <converters:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
+            <converters:ValueWhenConverter.When>
+                <x:Boolean>true</x:Boolean>
+            </converters:ValueWhenConverter.When>
+            <converters:ValueWhenConverter.Value>
+                <Visibility>Visible</Visibility>
+            </converters:ValueWhenConverter.Value>
+            <converters:ValueWhenConverter.Otherwise>
+                <Visibility>Collapsed</Visibility>
+            </converters:ValueWhenConverter.Otherwise>
+        </converters:ValueWhenConverter>
     </Page.Resources>
 
     <Grid x:Name="PageContainer"
@@ -76,6 +89,14 @@
             ItemTemplate="{StaticResource ResponsiveGridView}"
             ItemClick="{x:Bind ViewModel.MangaSelected}" Margin="0,12,0,0"
         />
+
+        <ProgressBar
+            Grid.Row="0" 
+            Margin="0,36,0,0"
+            Visibility="{x:Bind ViewModel.loading, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}" 
+            Height="10"
+            IsIndeterminate="True"
+            />
 
 
         <VisualStateManager.VisualStateGroups>

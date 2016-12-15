@@ -43,44 +43,117 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Image x:Name="image" 
-               HorizontalAlignment="Left" 
-               Height="250" 
-               Margin="12,60,0,0" 
-               VerticalAlignment="Top" 
-               Width="180"
-               Source="{x:Bind ViewModel.mangaDetail.image, Mode=OneWay}"
-               />
+        <Pivot x:Name="PageContainer">
+            <PivotItem Header="Detail">
+                <Grid>
+                    <ScrollViewer>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
 
-        <ListView x:Name="listView" 
-                  Margin="12,330,12,0" 
+                            <Image 
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Left" 
+                        Height="250" 
+                        Width="180"
+                        Source="{x:Bind ViewModel.mangaDetail.image, Mode=OneWay}"
+                    />
+
+                            <Grid Grid.Column="1" Grid.Row="0" Padding="12,0,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Text="Name" FontWeight="Bold"/>
+                                <StackPanel Grid.Row="1"
+                        HorizontalAlignment="Left">
+                                    <TextBlock 
+                            Text="{x:Bind ViewModel.mangaDetail.title, Mode=OneWay}"
+                            TextWrapping="Wrap"
+                        />
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="2" Text="Author" FontWeight="Bold"/>
+                                <StackPanel  Grid.Row="3"
+                        HorizontalAlignment="Left">
+                                    <TextBlock 
+                            Text="{x:Bind ViewModel.mangaDetail.author, Mode=OneWay}"
+                            TextWrapping="Wrap"
+                        />
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="4" Text="Artist" FontWeight="Bold"/>
+                                <StackPanel  Grid.Row="5"
+                        HorizontalAlignment="Left">
+                                    <TextBlock 
+                            Text="{x:Bind ViewModel.mangaDetail.artist, Mode=OneWay}"
+                            TextWrapping="Wrap"
+                        />
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Padding="0,12,0,0">
+                                <TextBlock Text="Description" FontWeight="Bold"/>
+                                <TextBlock 
+                            Text="{x:Bind ViewModel.mangaDetail.description, Mode=OneWay}"
+                            TextWrapping="Wrap"
+                        />
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+            </PivotItem>
+
+            <PivotItem Header="Chapters">
+                <ListView x:Name="listView" 
                   ItemsSource="{x:Bind ViewModel.mangaDetail.chapters, Mode=OneWay}" 
                   IsItemClickEnabled="True"
                   SelectionMode="None"
                   ItemClick="{x:Bind ViewModel.ChapterSelected}"
                   >
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:ChapterListItem">
-                    <Grid Height="40" HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ChapterListItem">
+                            <Grid Height="40" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-                        <TextBlock Text="Chapter" Grid.Column="0" Grid.Row="0" />
-                        <TextBlock Text="{x:Bind number}" Grid.Column="1" Grid.Row="0" />
-                        <TextBlock Text="{x:Bind title}" Grid.Row="1" Grid.ColumnSpan="2" />
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                                <TextBlock Text="Chapter" Grid.Column="0" Grid.Row="0" />
+                                <TextBlock Text="{x:Bind number}" Grid.Column="1" Grid.Row="0" />
+                                <TextBlock Text="{x:Bind title}" Grid.Row="1" Grid.ColumnSpan="2" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+        </Pivot>
 
-        <CommandBar VerticalAlignment="Top">
+        <CommandBar VerticalAlignment="Top"
+                    Padding="0,0,-48,0">
+            <CommandBar.Content>
+                <TextBlock Text="{x:Bind ViewModel.mangaDetail.title, Mode=OneWay}" Margin="0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="16,8"/>
+            </CommandBar.Content>
+        </CommandBar>
 
+        <CommandBar VerticalAlignment="Bottom">
             <AppBarButton 
                 Icon="Favorite" 
                 Label="Favourite" 
@@ -93,11 +166,28 @@
                 Click="{x:Bind ViewModel.MangaUnfavourited}"/>
 
             <AppBarButton Icon="Refresh" Label="Reload"/>
-
-            <CommandBar.Content>
-                <TextBlock Text="{x:Bind ViewModel.mangaDetail.title, Mode=OneWay}" Margin="0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="16,8"/>
-            </CommandBar.Content>
         </CommandBar>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowStates">
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="PageContainer.Padding" Value="24,60,24,48" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="PageContainer.Padding" Value="12,60,12,48" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
     </Grid>
 </Page>
