@@ -153,21 +153,6 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <CommandBar VerticalAlignment="Bottom">
-            <AppBarButton 
-                Icon="Favorite" 
-                Label="Favourite" 
-                Visibility="{x:Bind ViewModel.isFavourite, Mode=OneWay, Converter={StaticResource VisibleWhenFalseConverter}}" 
-                Click="{x:Bind ViewModel.MangaFavourited}"/>
-            <AppBarButton 
-                Icon="Unfavorite" 
-                Label="Unfavourite" 
-                Visibility="{x:Bind ViewModel.isFavourite, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}"
-                Click="{x:Bind ViewModel.MangaUnfavourited}"/>
-
-            <AppBarButton Icon="Refresh" Label="Reload"/>
-        </CommandBar>
-
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowStates">
                 <VisualState x:Name="WideState">

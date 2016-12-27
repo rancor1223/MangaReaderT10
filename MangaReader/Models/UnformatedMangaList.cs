@@ -16,19 +16,31 @@ namespace MangaReader.Models {
         public int total { get; set; }
 
         public static async Task<List<UnformatedMangaListItem>> GetListRemoteAsync() {
-            var http = new HttpClient();
-            var response = await http.GetAsync("http://www.mangaeden.com/api/list/0/");
-            var result = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<UnformatedMangaList>(result);
-            return data.manga;
+            try {
+                var http = new HttpClient();
+                var response = await http.GetAsync("http://www.mangaeden.com/api/list/0/");
+                var result = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<UnformatedMangaList>(result);
+                return data.manga;
+            }
+            catch (Exception e) {
+                // Throw an HttpException with customized message.
+                throw new Exception("No connection");
+            }
         }
 
         public static async Task<List<UnformatedMangaListItem>> GetListLocalAsync() {
-            var http = new HttpClient();
-            var response = await http.GetAsync("http://www.mangaeden.com/api/list/0/");
-            var result = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<UnformatedMangaList>(result);
-            return data.manga;
+            try {
+                var http = new HttpClient();
+                var response = await http.GetAsync("http://www.mangaeden.com/api/list/0/");
+                var result = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<UnformatedMangaList>(result);
+                return data.manga;
+            }
+            catch (Exception e) {
+                // Throw an HttpException with customized message.
+                throw new Exception("No connection");
+            }
         }
     }
 }

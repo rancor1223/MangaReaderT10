@@ -87,20 +87,8 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <CommandBar VerticalAlignment="Top">
-
-            <AppBarButton 
-                Icon="Favorite" 
-                Label="Favourite" 
-                Visibility="{x:Bind ViewModel.isFavourite, Mode=OneWay, Converter={StaticResource VisibleWhenFalseConverter}}" 
-                Click="{x:Bind ViewModel.MangaFavourited}"/>
-            <AppBarButton 
-                Icon="Unfavorite" 
-                Label="Unfavourite" 
-                Visibility="{x:Bind ViewModel.isFavourite, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}"
-                Click="{x:Bind ViewModel.MangaUnfavourited}"/>
-
-            <AppBarButton Icon="Refresh" Label="Reload"/>
+        <CommandBar VerticalAlignment="Top"
+                    Padding="0,0,-48,0">
 
             <CommandBar.Content>
                 <TextBlock Text="{x:Bind ViewModel.mangaDetail.title, Mode=OneWay}" Margin="0" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="16,8"/>

@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls;
 using Microsoft.Toolkit.Uwp;
 using System.Windows.Input;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 
 namespace MangaReader.ViewModels {
     class MangaDetailViewModel : ViewModelBase {
@@ -20,21 +21,9 @@ namespace MangaReader.ViewModels {
             get { return _mangaDetail; }
             set { Set(ref _mangaDetail, value); }
         }
-
-        private bool _isFavourite;
-        public bool isFavourite {
-            get { return _isFavourite; }
-            set { Set(ref _isFavourite, value); }
-        }
-
+        
         private string _mangaId;
-        private LocalObjectStorageHelper _objectStorage = new LocalObjectStorageHelper();
-
-        public MangaDetailViewModel() {
-            isFavourite = false;
-            var helper = new LocalObjectStorageHelper();
-        }
-
+        
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState) {
             _mangaId = parameter as string;
             Initialize(); 
@@ -43,15 +32,26 @@ namespace MangaReader.ViewModels {
         }
 
         private async void Initialize() {
-            mangaDetail = await MangaItem.GetDetailAsync(_mangaId);
-
-            var o = new List<MangaItem> { mangaDetail };
-            await _objectStorage.SaveFileAsync("favourites", o);
-            
+            //načtení detailu při otevření obrazovky
+            try {
+                mangaDetail = await MangaItem.GetDetailAsync(_mangaId);
+            }
+            catch (Exception e) {
+                mangaDetail = null;
+                if (NetworkInterface.GetIsNetworkAvailable()) {
+                    Dialogue.Error("There was an error.");
+                    Debug.WriteLine(e);
+                } else {
+                    Dialogue.Error("You are not connected to the Internet.");
+                }
+            }
         }
 
         public void ChapterSelected(object sender, ItemClickEventArgs e) {
+            //event výběru kapitoly
             var _chapter = (ChapterListItem)e.ClickedItem;
+
+            //připraví se základní informace o vybrané kapitole, aby se znovu nemusely na další stránce znovu stahovat
             string title = "Chapter " + _chapter.number;
 
             if(_chapter.title != "") {
@@ -62,25 +62,8 @@ namespace MangaReader.ViewModels {
                 title,
                 _chapter.id
                 );
-
+            //informace se uloží do classy a odešlou se jako parametr navigační metody
             NavigationService.Navigate(typeof(Views.ChapterPage), _chapterView);
         }
-
-        public async void MangaFavourited() {
-            if (await _objectStorage.FileExistsAsync("favourites")) {
-                var result = await _objectStorage.ReadFileAsync<List<MangaItem>>("favourites");
-                result.Add(mangaDetail);
-                await _objectStorage.SaveFileAsync("favourites", result);
-
-                isFavourite = true;
-            } else {
-                Debug.WriteLine("problem reading favourites");
-            }
-        }
-
-        public void MangaUnfavourited() {
-            isFavourite = false;
-        }
-        
     }
 }

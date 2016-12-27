@@ -25,39 +25,13 @@ namespace MangaReader.ViewModels {
             get { return _mainSearchText; }
             set { Set(ref _mainSearchText, value); }
         }
-
-        private bool _loading;
-        public bool loading {
-            get { return _loading; }
-            set { Set(ref _loading, value); }
-        }
-
+        
         public MainPageViewModel() {
-            loading = false;
             mangaList = new List<MangaItem>();
-
-
-            //Initialize();
         }
-
-        private async void Initialize() {
-            try {
-                mangaList = await MangaItem.GetListAsync();
-            }
-            catch (Exception e) {
-                mangaList = null;
-                if (NetworkInterface.GetIsNetworkAvailable()) {
-                    Dialogue.Error("There was an error.");
-                    Debug.WriteLine(e);
-                } else {
-                    Dialogue.Error("You are not connected to the Internet.");
-                }
-            }
-        }
-
+        
         public async void MainSearchSubmitted() {
-            loading = true;
-
+            //search submited
             try {
                 mangaList = await MangaItem.GetListAsync(_mainSearchText);
             }
@@ -69,9 +43,6 @@ namespace MangaReader.ViewModels {
                 } else {
                     Dialogue.Error("You are not connected to the Internet.");
                 }
-            }
-            finally {
-                loading = false;
             }
         }
 

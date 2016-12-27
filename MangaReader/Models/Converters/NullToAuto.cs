@@ -9,11 +9,13 @@ using Windows.UI.Xaml.Data;
 namespace MangaReader.Models.Converters {
     public class NullToAuto : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, string language) {
+            //if null, replace with 'Auto' in XAML
             return value == null ? "Auto" : value;
         }
         
         public object ConvertBack(object value, Type targetType, object parameter, string language) {
-            throw new NotImplementedException();
+            //opačná metoda není potřeba
+            throw new NotImplementedException(); 
         }
         
     }

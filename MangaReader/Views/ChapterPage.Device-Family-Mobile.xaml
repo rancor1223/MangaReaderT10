@@ -86,24 +86,9 @@
 
         <CommandBar x:Name="TopCommandBar"
                     VerticalAlignment="Top" 
+                    Padding="0,0,-48,0"
                     Visibility="{x:Bind ViewModel.isCommanBarVisible, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}" 
                     >
-            <AppBarButton 
-                x:Name="TopFitHeightBtn"
-                Icon="Sort" 
-                Label="Fit to height" 
-                Width="75"
-                Click="{x:Bind ViewModel.OnFitHeightSelection}" 
-                />
-
-
-            <AppBarButton 
-                x:Name="TopFitWidthBtn"
-                Icon="Switch" 
-                Label="Fit to width"
-                Width="75"
-                Click="{x:Bind ViewModel.OnFitWidthSelection}"
-                />
 
             <CommandBar.Content>
                 <Grid Padding="16,10">
@@ -129,6 +114,26 @@
                                />
                 </Grid>
             </CommandBar.Content>
+        </CommandBar>
+
+        <CommandBar x:Name="BottomCommandBar"
+                    VerticalAlignment="Bottom" 
+                    Visibility="{x:Bind ViewModel.isCommanBarVisible, Mode=OneWay, Converter={StaticResource VisibleWhenTrueConverter}}" 
+                    >
+            <AppBarButton 
+                Icon="Sort" 
+                Label="Fit to height" 
+                Width="75"
+                Click="{x:Bind ViewModel.OnFitHeightSelection}" 
+                />
+
+
+            <AppBarButton 
+                Icon="Switch" 
+                Label="Fit to width"
+                Width="75"
+                Click="{x:Bind ViewModel.OnFitWidthSelection}"
+                />
         </CommandBar>
     </Grid>
 </Page>

@@ -9,7 +9,6 @@ namespace MangaReader.Models {
         public List<List<object>> images { get; set; }
 
         public static async Task<UnformatedMangaChapterList> GetMangaChapterAsync(string id) {
-
             try {
                 var http = new HttpClient();
                 var response = await http.GetAsync("http://www.mangaeden.com/api/chapter/" + id + "/");

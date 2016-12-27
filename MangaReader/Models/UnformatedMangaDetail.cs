@@ -35,11 +35,18 @@ namespace MangaReader.Models {
         public bool updatedKeywords { get; set; }
 
         public static async Task<UnformatedMangaDetail> GetMangaDetailAsync(string id) {
-            var http = new HttpClient();
-            var response = await http.GetAsync("http://www.mangaeden.com/api/manga/" + id + "/");
-            var result = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<UnformatedMangaDetail>(result);
-            return data;
+            try {
+                var http = new HttpClient();
+                var response = await http.GetAsync("http://www.mangaeden.com/api/manga/" + id + "/");
+                var result = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<UnformatedMangaDetail>(result);
+                return data;
+            }
+            catch (Exception e) {
+                // Throw an HttpException with customized message.
+                throw new Exception("No connection");
+            }
+
         }
     }
 }

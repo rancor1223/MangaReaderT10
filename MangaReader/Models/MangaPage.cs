@@ -31,6 +31,7 @@ namespace MangaReader.Models {
             var pageListContainer = await UnformatedMangaChapterList.GetMangaChapterAsync(id);
             var pageList = new List<MangaPage>();
 
+            //zformátovaní dat
             foreach (List<object> page in pageListContainer.images) {
                 var formatedPage = new MangaPage(
                     Convert.ToInt32(page[0]),

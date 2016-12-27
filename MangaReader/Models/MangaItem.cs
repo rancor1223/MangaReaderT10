@@ -21,22 +21,10 @@ namespace MangaReader.Models {
         public string artist { get; set; }
         public List<string> categories { get; set; }
         public List<ChapterListItem> chapters { get; set; }
-
-        public bool isFavourite {
-            get {
-                return false; //placeholder
-            }
-        }
-        public int unreadChapters {
-            get {
-                Random rnd = new Random();
-                return rnd.Next(0, 15); //placeholder
-            }
-        }
-
+        
         //constructor
 
-        public MangaItem(){}
+        public MangaItem(){} //prázdný constructor je nutný při deserializaci dat ze souboru
 
         //full
         public MangaItem(string t, string im, string i, string al, List<string> cat, string desc, string a, string ar, List<ChapterListItem> ch)
@@ -115,6 +103,7 @@ namespace MangaReader.Models {
             var mangaListContainer = await UnformatedMangaList.GetListRemoteAsync();
             var mangaList = new List<MangaItem>();
 
+            //zformátovaní dat
             foreach (UnformatedMangaListItem unformatedManga in mangaListContainer) {
                 var manga = new MangaItem(
                     unformatedManga.t,
@@ -126,17 +115,17 @@ namespace MangaReader.Models {
                 mangaList.Add(manga);
             }
 
+            //catchování dat do JSON souboru pro rychlejší přístup
             SavelMangaListToFileAsync(mangaList);
 
             return mangaList;
         }
 
         private static async void SavelMangaListToFileAsync(List<MangaItem> mangaList) {
-            var storageFolder = ApplicationData.Current.LocalFolder;
-            var localSettings = ApplicationData.Current.LocalSettings;
+            //serializace dat do JSON souboru
+            var storageFolder = ApplicationData.Current.LocalFolder; //aplikační data složka
+            var localSettings = ApplicationData.Current.LocalSettings; //aplikační nastavení
             
-            localSettings.Values["MangaedenLastUpdate"] = Convert.ToString(DateTime.UtcNow);
-
             var mangaedenFile = await storageFolder.CreateFileAsync("mangaeden.json", Windows.Storage.CreationCollisionOption.ReplaceExisting);
             var stream = await mangaedenFile.OpenAsync(FileAccessMode.ReadWrite);
 
@@ -155,6 +144,7 @@ namespace MangaReader.Models {
         }
 
         private static async Task<List<MangaItem>> RetrieveLocalMangaListAsync() {
+            //deserializace dat z JSON souboru
             var mangaList = new List<MangaItem>();
             var storageFolder = ApplicationData.Current.LocalFolder;
             var mangaedenFile = await storageFolder.GetFileAsync("mangaeden.json");
@@ -186,10 +176,12 @@ namespace MangaReader.Models {
 
             var chapters = new List<ChapterListItem>();
 
+            //zformátovaní dat
             foreach (var chapter in unformatedMangaDetail.chapters) {
                 string title;
                 if (Convert.ToString(chapter[0]) == (string)chapter[2]) {
-                    //some chapters are named with their number, which would be duplicitely displayed
+                    //některé kapitoly mají místo jména pouze číslo kapitolyu
+                    //to se musí odstranit, jinak by se zobrazovalo dvakrát (je už vyplněné v položce 'chapter')
                     title = "";
                 } else {
                     title = (string)chapter[2];
